@@ -7,6 +7,15 @@
 
 import SwiftUI
 import NIO
+import Combine
+
+class PublisherClass {
+    let objectWillChange = PassthroughSubject<Void, Never>()
+    func publishEvent() {
+        print("published")
+        objectWillChange.send()
+    }
+}
 
 func dataToDouble(data: Data) -> Double {
     let bigEndianValue: UInt64 = data.withUnsafeBytes { bytes -> UInt64 in
@@ -24,10 +33,10 @@ class EchoInputHandler : ChannelInboundHandler {
     // typealias changes to wrap out ByteBuffer in an AddressedEvelope which describes where the packages are going
     public typealias InboundIn = AddressedEnvelope<ByteBuffer>
     public typealias OutboundOut = AddressedEnvelope<ByteBuffer>
-    private var numBytes = 0
+    private var publisher: PublisherClass
     
-    public init(_ expectedNumBytes: Int) {
-        self.numBytes = expectedNumBytes
+    public init(_ publisher: PublisherClass) {
+        self.publisher = publisher
     }
     
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
@@ -42,6 +51,8 @@ class EchoInputHandler : ChannelInboundHandler {
         let y = dataToDouble(data: yData)
 
         print("Received: \(messageType) \(x) \(y)")        
+
+        self.publisher.publishEvent()
     }
     
     public func errorCaught(context: ChannelHandlerContext, error: Error) {
@@ -55,12 +66,12 @@ class NetCode {
     var channel: Channel? = nil
     var remoteAddress: SocketAddress? = nil
 
-    func connect() {
+    func connect(publisher: PublisherClass) {
         group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         let bootstrap = DatagramBootstrap(group: group!)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .channelInitializer { channel in
-                channel.pipeline.addHandler(EchoInputHandler(0))
+                channel.pipeline.addHandler(EchoInputHandler(publisher))
             }
 
         remoteAddress = try! SocketAddress(ipAddress: "256.256.256.256", port: 65536)
@@ -124,6 +135,16 @@ struct ContentView: View {
     @State private var savedOffset = CGSize.zero
     @State private var dragOffset = CGSize.zero
     let netCode = NetCode()
+    let publisher = PublisherClass()
+    var cancellables = Set<AnyCancellable>()
+
+    init() {
+        print("init")
+        publisher.objectWillChange
+            .sink { _ in
+                print("Received event")
+            }.store(in: &cancellables)
+    }
 
     var body: some View {
         Rectangle()
@@ -143,7 +164,7 @@ struct ContentView: View {
             )
             .onAppear {
                 DispatchQueue.global(qos: .background).async {
-                    self.netCode.connect()
+                    self.netCode.connect(publisher: publisher)
                     self.netCode.sendHello()
                 }
             }
