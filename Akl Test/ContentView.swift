@@ -8,6 +8,18 @@
 import SwiftUI
 import NIO
 
+func dataToDouble(data: Data) -> Double {
+    let bigEndianValue: UInt64 = data.withUnsafeBytes { bytes -> UInt64 in
+        var value: UInt64 = 0
+        _ = withUnsafeMutableBytes(of: &value) { valueBytes in
+            bytes.copyBytes(to: valueBytes)
+        }
+        return value
+    }
+    let valueAsUInt64 = UInt64(bigEndian: bigEndianValue)
+    return Double(bitPattern: valueAsUInt64)
+}
+
 class EchoInputHandler : ChannelInboundHandler {
     // typealias changes to wrap out ByteBuffer in an AddressedEvelope which describes where the packages are going
     public typealias InboundIn = AddressedEnvelope<ByteBuffer>
@@ -19,38 +31,17 @@ class EchoInputHandler : ChannelInboundHandler {
     }
     
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        let byteBuffer: ByteBuffer = self.unwrapInboundIn(data).data
+        let data = Data(byteBuffer.readableBytesView)
+
+        let messageType = data[0]
+        let xData = data[1...8]
+        let yData = data[9...16]
         
-        let data: ByteBuffer = self.unwrapInboundIn(data).data
-        // convert data from ByteBuffer to Data
-        let data2 = Data(data.readableBytesView)
+        let x = dataToDouble(data: xData)
+        let y = dataToDouble(data: yData)
 
-        // split data to 1 byte message type, 8 byte Double x (Big Endian), 8 byte Double y (Big Endian)
-        let messageType = data2[0]
-        let xData = data2[1...8]
-        let yData = data2[9...16]
-
-        // convert x and y to Double
-        let x = Double(bitPattern: UInt64(bigEndian: xData.withUnsafeBytes { $0.load(as: UInt64.self) }))
-        let y = Double(bitPattern: UInt64(bigEndian: yData.withUnsafeBytes { $0.load(as: UInt64.self) }))
-
-        print("Received: \(messageType) \(x) \(y)")
-        // print(data)
-        
-        // let bigEndianValue: UInt64 = data.withUnsafeBytes { bytes in
-        //     bytes.load(as: UInt64.self)
-        // }
-        // let valueAsUInt64 = UInt64(bigEndian: bigEndianValue)
-        // let decodedValue = Double(bitPattern: valueAsUInt64)
-
-
-        // numBytes -= self.unwrapInboundIn(data).data.readableBytes
-        
-        // assert(numBytes >= 0)
-        
-        // if numBytes == 0 {
-        //     print("Received the line back from the server, closing channel")
-        //     context.close(promise: nil)
-        // }
+        print("Received: \(messageType) \(x) \(y)")        
     }
     
     public func errorCaught(context: ChannelHandlerContext, error: Error) {
