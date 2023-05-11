@@ -30,13 +30,14 @@ class NetCode {
     func sendPosition(x: Double, y: Double) {
         do {
             var data = Data()
+            data.append(0x02)
             withUnsafeBytes(of: x.bitPattern.bigEndian) { bytes in
                 data.append(contentsOf: bytes)
             }
             withUnsafeBytes(of: y.bitPattern.bigEndian) { bytes in
                 data.append(contentsOf: bytes)
             }
-            var buffer = channel!.allocator.buffer(capacity: 4 * 2)
+            var buffer = channel!.allocator.buffer(capacity: 4 * 2 + 1)
             buffer.writeBytes(data)
             let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
             try channel!.writeAndFlush(writeData).wait()
