@@ -9,30 +9,48 @@ import SwiftUI
 import NIO
 
 class NetCode {
-    func sendPing() {
-        let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-        let bootstrap = DatagramBootstrap(group: group)
+    var group: MultiThreadedEventLoopGroup? = nil
+    var channel: Channel? = nil
+    var remoteAddress: SocketAddress? = nil
+
+    func connect() {
+        group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+        let bootstrap = DatagramBootstrap(group: group!)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
 
-        defer {
-            try! group.syncShutdownGracefully()
-        }
-        let message = "ping"
-        let remoteAddress = try! SocketAddress(ipAddress: "256.256.256.256", port: 65536)
+        remoteAddress = try! SocketAddress(ipAddress: "256.256.256.256", port: 65536)
         do {
-            let channel = try bootstrap.bind(host: "0.0.0.0", port: 0).wait()
-            defer {
-                try! channel.close().wait()
-            }
+            channel = try bootstrap.bind(host: "0.0.0.0", port: 0).wait()
+        } catch {
+            print("Failed to connect: \(error)")
+            disconnect()
+        }
+    }
 
-            var buffer = channel.allocator.buffer(capacity: message.utf8.count)
+    func sendPing() {
+        let message = "ping"
+        do {
+            var buffer = channel!.allocator.buffer(capacity: message.utf8.count)
             buffer.writeString(message)
 
-            let writeData = AddressedEnvelope(remoteAddress: remoteAddress, data: buffer)
-            try channel.writeAndFlush(writeData).wait()
+            let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
+            try channel!.writeAndFlush(writeData).wait()
         } catch {
             print("Failed to send UDP message: \(error)")
+            disconnect()
         }
+    }
+
+    func disconnect() {
+        if let channel = channel {
+            try! channel.close().wait()
+        }
+        if let group = group {
+            try! group.syncShutdownGracefully()
+        }
+        group = nil
+        channel = nil
+        remoteAddress = nil
     }
 }
 
@@ -52,6 +70,8 @@ struct ContentView: View {
                     .onChanged { gesture in
                         self.dragOffset.width = self.savedOffset.width + gesture.translation.width
                         self.dragOffset.height = self.savedOffset.height + gesture.translation.height
+                        
+                        self.netCode.sendPing()
                     }
                     .onEnded { _ in
                         self.savedOffset = self.dragOffset
@@ -59,7 +79,7 @@ struct ContentView: View {
             )
             .onAppear {
                 DispatchQueue.global(qos: .background).async {
-                    self.netCode.sendPing()
+                    self.netCode.connect()
                 }
             }
     }
