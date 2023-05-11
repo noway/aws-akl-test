@@ -28,12 +28,16 @@ class NetCode {
     }
 
     func sendPosition(x: Double, y: Double) {
-        // encode
-        let message = "\(x),\(y)"
         do {
-            var buffer = channel!.allocator.buffer(capacity: message.utf8.count)
-            buffer.writeString(message)
-
+            var data = Data()
+            withUnsafeBytes(of: x.bitPattern.bigEndian) { bytes in
+                data.append(contentsOf: bytes)
+            }
+            withUnsafeBytes(of: y.bitPattern.bigEndian) { bytes in
+                data.append(contentsOf: bytes)
+            }
+            var buffer = channel!.allocator.buffer(capacity: 4 * 2)
+            buffer.writeBytes(data)
             let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
             try channel!.writeAndFlush(writeData).wait()
         } catch {
