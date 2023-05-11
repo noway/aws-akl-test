@@ -8,6 +8,33 @@
 import SwiftUI
 import NIO
 
+class EchoInputHandler : ChannelInboundHandler {
+    // typealias changes to wrap out ByteBuffer in an AddressedEvelope which describes where the packages are going
+    public typealias InboundIn = AddressedEnvelope<ByteBuffer>
+    public typealias OutboundOut = AddressedEnvelope<ByteBuffer>
+    private var numBytes = 0
+    
+    public init(_ expectedNumBytes: Int) {
+        self.numBytes = expectedNumBytes
+    }
+    
+    public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        numBytes -= self.unwrapInboundIn(data).data.readableBytes
+        
+        assert(numBytes >= 0)
+        
+        if numBytes == 0 {
+            print("Received the line back from the server, closing channel")
+            context.close(promise: nil)
+        }
+    }
+    
+    public func errorCaught(context: ChannelHandlerContext, error: Error) {
+        print("error: ", error)
+        context.close(promise: nil)
+    }
+}
+
 class NetCode {
     var group: MultiThreadedEventLoopGroup? = nil
     var channel: Channel? = nil
@@ -17,6 +44,9 @@ class NetCode {
         group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         let bootstrap = DatagramBootstrap(group: group!)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
+            .channelInitializer { channel in
+                channel.pipeline.addHandler(EchoInputHandler(0))
+            }
 
         remoteAddress = try! SocketAddress(ipAddress: "256.256.256.256", port: 65536)
         do {
