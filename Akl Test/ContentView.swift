@@ -27,6 +27,20 @@ class NetCode {
         }
     }
 
+    func sendHello() {
+        do {
+            var data = Data()
+            data.append(0x01)
+            var buffer = channel!.allocator.buffer(capacity: 1)
+            buffer.writeBytes(data)
+            let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
+            try channel!.writeAndFlush(writeData).wait()
+        } catch {
+            print("Failed to send UDP message: \(error)")
+            disconnect()
+        }
+    }
+
     func sendPosition(x: Double, y: Double) {
         do {
             var data = Data()
@@ -85,6 +99,7 @@ struct ContentView: View {
             .onAppear {
                 DispatchQueue.global(qos: .background).async {
                     self.netCode.connect()
+                    self.netCode.sendHello()
                 }
             }
     }
