@@ -19,14 +19,38 @@ class EchoInputHandler : ChannelInboundHandler {
     }
     
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-        numBytes -= self.unwrapInboundIn(data).data.readableBytes
         
-        assert(numBytes >= 0)
+        let data: ByteBuffer = self.unwrapInboundIn(data).data
+        // convert data from ByteBuffer to Data
+        let data2 = Data(data.readableBytesView)
+
+        // split data to 1 byte message type, 8 byte Double x (Big Endian), 8 byte Double y (Big Endian)
+        let messageType = data2[0]
+        let xData = data2[1...8]
+        let yData = data2[9...16]
+
+        // convert x and y to Double
+        let x = Double(bitPattern: UInt64(bigEndian: xData.withUnsafeBytes { $0.load(as: UInt64.self) }))
+        let y = Double(bitPattern: UInt64(bigEndian: yData.withUnsafeBytes { $0.load(as: UInt64.self) }))
+
+        print("Received: \(messageType) \(x) \(y)")
+        // print(data)
         
-        if numBytes == 0 {
-            print("Received the line back from the server, closing channel")
-            context.close(promise: nil)
-        }
+        // let bigEndianValue: UInt64 = data.withUnsafeBytes { bytes in
+        //     bytes.load(as: UInt64.self)
+        // }
+        // let valueAsUInt64 = UInt64(bigEndian: bigEndianValue)
+        // let decodedValue = Double(bitPattern: valueAsUInt64)
+
+
+        // numBytes -= self.unwrapInboundIn(data).data.readableBytes
+        
+        // assert(numBytes >= 0)
+        
+        // if numBytes == 0 {
+        //     print("Received the line back from the server, closing channel")
+        //     context.close(promise: nil)
+        // }
     }
     
     public func errorCaught(context: ChannelHandlerContext, error: Error) {
