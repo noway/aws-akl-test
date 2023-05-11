@@ -9,11 +9,33 @@ import SwiftUI
 import NIO
 import Combine
 
-class PublisherClass {
-    let objectWillChange = PassthroughSubject<Void, Never>()
-    func publishEvent() {
+class PublisherClass: ObservableObject {
+    @Published var dragOffset: CGSize = .zero
+    @Published var savedOffset: CGSize = .zero
+
+    var cancellables = Set<AnyCancellable>()
+    let objectWillChange = PassthroughSubject<[Double], Never>()
+
+    init() {
+        print("init")
+        objectWillChange
+            .sink { [weak self] coords in
+                let x = coords[0]
+                let y = coords[1]
+                print("Received event \(x) \(y)")
+                self?.setPosition(x: x, y: y)
+            }.store(in: &cancellables)
+    }
+
+    func publishEvent(x: Double, y: Double) {
         print("published")
-        objectWillChange.send()
+        objectWillChange.send([x, y])
+    }
+
+    func setPosition(x: Double, y: Double) {
+        self.dragOffset.width = x
+        self.dragOffset.height = y
+        self.savedOffset = self.dragOffset
     }
 }
 
@@ -52,7 +74,7 @@ class EchoInputHandler : ChannelInboundHandler {
 
         print("Received: \(messageType) \(x) \(y)")        
 
-        self.publisher.publishEvent()
+        self.publisher.publishEvent(x: x, y: y)
     }
     
     public func errorCaught(context: ChannelHandlerContext, error: Error) {
@@ -131,35 +153,27 @@ class NetCode {
 }
 
 
-struct ContentView: View {
-    @State private var savedOffset = CGSize.zero
-    @State private var dragOffset = CGSize.zero
-    let netCode = NetCode()
-    let publisher = PublisherClass()
-    var cancellables = Set<AnyCancellable>()
 
-    init() {
-        print("init")
-        publisher.objectWillChange
-            .sink { _ in
-                print("Received event")
-            }.store(in: &cancellables)
-    }
+
+struct ContentView: View {
+    @ObservedObject var publisher = PublisherClass()
+
+    let netCode = NetCode()
 
     var body: some View {
         Rectangle()
             .fill(Color.red)
             .frame(width: 100, height: 100)
-            .offset(dragOffset)
+            .offset(self.publisher.dragOffset)
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        self.dragOffset.width = self.savedOffset.width + gesture.translation.width
-                        self.dragOffset.height = self.savedOffset.height + gesture.translation.height
-                        self.netCode.sendPosition(x: self.dragOffset.width, y: self.dragOffset.height)
+                        self.publisher.dragOffset.width = self.publisher.savedOffset.width + gesture.translation.width
+                        self.publisher.dragOffset.height = self.publisher.savedOffset.height + gesture.translation.height
+                        self.netCode.sendPosition(x: self.publisher.dragOffset.width, y: self.publisher.dragOffset.height)
                     }
                     .onEnded { _ in
-                        self.savedOffset = self.dragOffset
+                        self.publisher.savedOffset = self.publisher.dragOffset
                     }
             )
             .onAppear {
