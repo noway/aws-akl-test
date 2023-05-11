@@ -168,9 +168,7 @@ struct ContentView: View {
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        self.publisher.dragOffset.width = self.publisher.savedOffset.width + gesture.translation.width
-                        self.publisher.dragOffset.height = self.publisher.savedOffset.height + gesture.translation.height
-                        self.netCode.sendPosition(x: self.publisher.dragOffset.width, y: self.publisher.dragOffset.height)
+                        self.netCode.sendPosition(x: gesture.translation.width, y: gesture.translation.height)
                     }
                     .onEnded { _ in
                         self.publisher.savedOffset = self.publisher.dragOffset
