@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var savedOffset = CGSize.zero
+    @State private var dragOffset = CGSize.zero
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+        Rectangle()
+            .fill(Color.red)
+            .frame(width: 100, height: 100)
+            .offset(dragOffset)
+            .gesture(
+                DragGesture()
+                    .onChanged { gesture in
+                        self.dragOffset.width = self.savedOffset.width + gesture.translation.width
+                        self.dragOffset.height = self.savedOffset.height + gesture.translation.height
+                    }
+                    .onEnded { _ in
+                        self.savedOffset = self.dragOffset
+                    }
+            )
     }
 }
 
