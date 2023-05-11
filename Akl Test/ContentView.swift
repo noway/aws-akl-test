@@ -27,8 +27,9 @@ class NetCode {
         }
     }
 
-    func sendPing() {
-        let message = "ping"
+    func sendPosition(x: Double, y: Double) {
+        // encode
+        let message = "\(x),\(y)"
         do {
             var buffer = channel!.allocator.buffer(capacity: message.utf8.count)
             buffer.writeString(message)
@@ -70,8 +71,7 @@ struct ContentView: View {
                     .onChanged { gesture in
                         self.dragOffset.width = self.savedOffset.width + gesture.translation.width
                         self.dragOffset.height = self.savedOffset.height + gesture.translation.height
-                        
-                        self.netCode.sendPing()
+                        self.netCode.sendPosition(x: self.dragOffset.width, y: self.dragOffset.height)
                     }
                     .onEnded { _ in
                         self.savedOffset = self.dragOffset
