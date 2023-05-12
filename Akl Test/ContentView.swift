@@ -13,23 +13,10 @@ class PublisherClass: ObservableObject {
     @Published var dragOffset: CGSize = .zero
     @Published var savedOffset: CGSize = .zero
 
-    var cancellables = Set<AnyCancellable>()
-    let objectWillChange = PassthroughSubject<[Double], Never>()
-
-    init() {
-        print("init")
-        objectWillChange
-            .sink { [weak self] coords in
-                let x = coords[0]
-                let y = coords[1]
-                print("Received event \(x) \(y)")
-                self?.setPosition(x: x, y: y)
-            }.store(in: &cancellables)
-    }
-
-    func publishEvent(x: Double, y: Double) {
-        print("published")
-        objectWillChange.send([x, y])
+    func publishEvent(x: Double, y: Double) {        
+        DispatchQueue.main.async {
+            self.setPosition(x: x, y: y)
+        }
     }
 
     func setPosition(x: Double, y: Double) {
@@ -71,8 +58,6 @@ class EchoInputHandler : ChannelInboundHandler {
         
         let x = dataToDouble(data: xData)
         let y = dataToDouble(data: yData)
-
-        print("Received: \(messageType) \(x) \(y)")        
 
         self.publisher.publishEvent(x: x, y: y)
     }
