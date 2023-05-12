@@ -22,7 +22,6 @@ class PublisherClass: ObservableObject {
     func setPosition(x: Double, y: Double) {
         self.dragOffset.width = x
         self.dragOffset.height = y
-        self.savedOffset = self.dragOffset
     }
 }
 
@@ -153,7 +152,7 @@ struct ContentView: View {
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        self.netCode.sendPosition(x: gesture.translation.width, y: gesture.translation.height)
+                        self.netCode.sendPosition(x: self.publisher.savedOffset.width + gesture.translation.width, y: self.publisher.savedOffset.height + gesture.translation.height)
                     }
                     .onEnded { _ in
                         self.publisher.savedOffset = self.publisher.dragOffset
