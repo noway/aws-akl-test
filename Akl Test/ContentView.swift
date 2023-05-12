@@ -7,11 +7,9 @@
 
 import SwiftUI
 import NIO
-import Combine
 
 class PublisherClass: ObservableObject {
-    @Published var dragOffset: CGSize = .zero
-    @Published var savedOffset: CGSize = .zero
+    @Published var squarePosition: CGSize = .zero
 
     func publishEvent(x: Double, y: Double) {        
         DispatchQueue.main.async {
@@ -20,8 +18,8 @@ class PublisherClass: ObservableObject {
     }
 
     func setPosition(x: Double, y: Double) {
-        self.dragOffset.width = x
-        self.dragOffset.height = y
+        self.squarePosition.width = x
+        self.squarePosition.height = y
     }
 }
 
@@ -141,6 +139,7 @@ class NetCode {
 
 struct ContentView: View {
     @ObservedObject var publisher = PublisherClass()
+    @State var startingPoint: CGSize = .zero
 
     let netCode = NetCode()
 
@@ -148,14 +147,16 @@ struct ContentView: View {
         Rectangle()
             .fill(Color.red)
             .frame(width: 100, height: 100)
-            .offset(self.publisher.dragOffset)
+            .offset(self.publisher.squarePosition)
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        self.netCode.sendPosition(x: self.publisher.savedOffset.width + gesture.translation.width, y: self.publisher.savedOffset.height + gesture.translation.height)
+                        let x = self.startingPoint.width + gesture.translation.width
+                        let y = self.startingPoint.height + gesture.translation.height
+                        self.netCode.sendPosition(x: x, y: y)
                     }
                     .onEnded { _ in
-                        self.publisher.savedOffset = self.publisher.dragOffset
+                        self.startingPoint = self.publisher.squarePosition
                     }
             )
             .onAppear {
