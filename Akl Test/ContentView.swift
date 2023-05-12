@@ -8,14 +8,8 @@
 import SwiftUI
 import NIO
 
-class PublisherClass: ObservableObject {
+class SquareState: ObservableObject {
     @Published var squarePosition: CGSize = .zero
-
-    func publishEvent(x: Double, y: Double) {        
-        DispatchQueue.main.async {
-            self.setPosition(x: x, y: y)
-        }
-    }
 
     func setPosition(x: Double, y: Double) {
         self.squarePosition.width = x
@@ -39,10 +33,10 @@ class EchoInputHandler : ChannelInboundHandler {
     // typealias changes to wrap out ByteBuffer in an AddressedEvelope which describes where the packages are going
     public typealias InboundIn = AddressedEnvelope<ByteBuffer>
     public typealias OutboundOut = AddressedEnvelope<ByteBuffer>
-    private var publisher: PublisherClass
+    private var squareState: SquareState
     
-    public init(_ publisher: PublisherClass) {
-        self.publisher = publisher
+    public init(_ squareState: SquareState) {
+        self.squareState = squareState
     }
     
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
@@ -56,7 +50,9 @@ class EchoInputHandler : ChannelInboundHandler {
         let x = dataToDouble(data: xData)
         let y = dataToDouble(data: yData)
 
-        self.publisher.publishEvent(x: x, y: y)
+        DispatchQueue.main.async {
+            self.squareState.setPosition(x: x, y: y)
+        }
     }
     
     public func errorCaught(context: ChannelHandlerContext, error: Error) {
@@ -70,12 +66,12 @@ class NetCode {
     var channel: Channel? = nil
     var remoteAddress: SocketAddress? = nil
 
-    func connect(publisher: PublisherClass) {
+    func connect(squareState: SquareState) {
         group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         let bootstrap = DatagramBootstrap(group: group!)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .channelInitializer { channel in
-                channel.pipeline.addHandler(EchoInputHandler(publisher))
+                channel.pipeline.addHandler(EchoInputHandler(squareState))
             }
 
         remoteAddress = try! SocketAddress(ipAddress: "256.256.256.256", port: 65536)
@@ -139,7 +135,7 @@ class GestureStore: ObservableObject {
 }
 
 struct ContentView: View {
-    @ObservedObject var publisher = PublisherClass()
+    @ObservedObject var squareState = SquareState()
     @StateObject var gestureStore = GestureStore()
 
     let netCode = NetCode()
@@ -148,7 +144,7 @@ struct ContentView: View {
         Rectangle()
             .fill(Color.red)
             .frame(width: 100, height: 100)
-            .offset(self.publisher.squarePosition)
+            .offset(self.squareState.squarePosition)
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
@@ -157,12 +153,12 @@ struct ContentView: View {
                         self.netCode.sendPosition(x: x, y: y)
                     }
                     .onEnded { _ in
-                        self.gestureStore.startingPoint = self.publisher.squarePosition
+                        self.gestureStore.startingPoint = self.squareState.squarePosition
                     }
             )
             .onAppear {
                 DispatchQueue.global(qos: .background).async {
-                    self.netCode.connect(publisher: publisher)
+                    self.netCode.connect(squareState: squareState)
                     self.netCode.sendHello()
                 }
             }
