@@ -47,7 +47,7 @@ class IncomingDatagramHandler : ChannelInboundHandler {
         let byteBuffer: ByteBuffer = self.unwrapInboundIn(data).data
         let data = Data(byteBuffer.readableBytesView)
 
-        let messageType = data[0]
+        _ = data[0]
         let xData = data[1...8]
         let yData = data[9...16]
         
@@ -78,7 +78,10 @@ class NetCode {
                 channel.pipeline.addHandler(IncomingDatagramHandler(squareState))
             }
 
-        remoteAddress = try! SocketAddress(ipAddress: "256.256.256.256", port: 65536)
+        let remoteAddr = Bundle.main.object(forInfoDictionaryKey: "RemoteAddr") as? String ?? ""
+        let remotePortStr = Bundle.main.object(forInfoDictionaryKey: "RemotePort") as? String ?? "0"
+        let remotePort = Int(remotePortStr) ?? 0
+        remoteAddress = try! SocketAddress(ipAddress: remoteAddr, port: remotePort)
         do {
             channel = try bootstrap.bind(host: "0.0.0.0", port: 0).wait()
         } catch {

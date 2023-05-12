@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		491690DE2A0E360B00FF36FA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 491690DD2A0E360B00FF36FA /* Config.xcconfig */; };
 		499B3D742A0D11CA0065D6DF /* Akl_TestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499B3D732A0D11CA0065D6DF /* Akl_TestApp.swift */; };
 		499B3D762A0D11CA0065D6DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499B3D752A0D11CA0065D6DF /* ContentView.swift */; };
 		499B3D782A0D11CB0065D6DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499B3D772A0D11CB0065D6DF /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		491690DD2A0E360B00FF36FA /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = "Akl Test/Config.xcconfig"; sourceTree = "<group>"; };
 		499B3D702A0D11CA0065D6DF /* Akl Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Akl Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		499B3D732A0D11CA0065D6DF /* Akl_TestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Akl_TestApp.swift; sourceTree = "<group>"; };
 		499B3D752A0D11CA0065D6DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -41,6 +43,7 @@
 		499B3D672A0D11CA0065D6DF = {
 			isa = PBXGroup;
 			children = (
+				491690DD2A0E360B00FF36FA /* Config.xcconfig */,
 				499B3D722A0D11CA0065D6DF /* Akl Test */,
 				499B3D712A0D11CA0065D6DF /* Products */,
 			);
@@ -141,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				499B3D7C2A0D11CB0065D6DF /* Preview Assets.xcassets in Resources */,
+				491690DE2A0E360B00FF36FA /* Config.xcconfig in Resources */,
 				499B3D782A0D11CB0065D6DF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -162,6 +166,7 @@
 /* Begin XCBuildConfiguration section */
 		499B3D7D2A0D11CB0065D6DF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 491690DD2A0E360B00FF36FA /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -220,6 +225,7 @@
 		};
 		499B3D7E2A0D11CB0065D6DF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 491690DD2A0E360B00FF36FA /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
