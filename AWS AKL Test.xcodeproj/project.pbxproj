@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		491690DE2A0E360B00FF36FA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 491690DD2A0E360B00FF36FA /* Config.xcconfig */; };
-		499B3D742A0D11CA0065D6DF /* Akl_TestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499B3D732A0D11CA0065D6DF /* Akl_TestApp.swift */; };
+		499B3D742A0D11CA0065D6DF /* AWS_AKL_TestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499B3D732A0D11CA0065D6DF /* AWS_AKL_TestApp.swift */; };
 		499B3D762A0D11CA0065D6DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499B3D752A0D11CA0065D6DF /* ContentView.swift */; };
 		499B3D782A0D11CB0065D6DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499B3D772A0D11CB0065D6DF /* Assets.xcassets */; };
 		499B3D7C2A0D11CB0065D6DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499B3D7B2A0D11CB0065D6DF /* Preview Assets.xcassets */; };
@@ -19,12 +19,12 @@
 /* Begin PBXFileReference section */
 		491690DD2A0E360B00FF36FA /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = "AWS AKL Test/Config.xcconfig"; sourceTree = "<group>"; };
 		499B3D702A0D11CA0065D6DF /* AWS AKL Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AWS AKL Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		499B3D732A0D11CA0065D6DF /* Akl_TestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Akl_TestApp.swift; sourceTree = "<group>"; };
+		499B3D732A0D11CA0065D6DF /* AWS_AKL_TestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS_AKL_TestApp.swift; sourceTree = "<group>"; };
 		499B3D752A0D11CA0065D6DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		499B3D772A0D11CB0065D6DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		499B3D792A0D11CB0065D6DF /* Akl_Test.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Akl_Test.entitlements; sourceTree = "<group>"; };
+		499B3D792A0D11CB0065D6DF /* AWS_AKL_Test.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AWS_AKL_Test.entitlements; sourceTree = "<group>"; };
 		499B3D7B2A0D11CB0065D6DF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		499B3D872A0D19340065D6DF /* Akl-Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Akl-Test-Info.plist"; sourceTree = SOURCE_ROOT; };
+		499B3D872A0D19340065D6DF /* AWS-AKL-Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "AWS-AKL-Test-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,11 +60,11 @@
 		499B3D722A0D11CA0065D6DF /* AWS AKL Test */ = {
 			isa = PBXGroup;
 			children = (
-				499B3D872A0D19340065D6DF /* Akl-Test-Info.plist */,
-				499B3D732A0D11CA0065D6DF /* Akl_TestApp.swift */,
+				499B3D872A0D19340065D6DF /* AWS-AKL-Test-Info.plist */,
+				499B3D732A0D11CA0065D6DF /* AWS_AKL_TestApp.swift */,
 				499B3D752A0D11CA0065D6DF /* ContentView.swift */,
 				499B3D772A0D11CB0065D6DF /* Assets.xcassets */,
-				499B3D792A0D11CB0065D6DF /* Akl_Test.entitlements */,
+				499B3D792A0D11CB0065D6DF /* AWS_AKL_Test.entitlements */,
 				499B3D7A2A0D11CB0065D6DF /* Preview Content */,
 			);
 			path = "AWS AKL Test";
@@ -157,7 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				499B3D762A0D11CA0065D6DF /* ContentView.swift in Sources */,
-				499B3D742A0D11CA0065D6DF /* Akl_TestApp.swift in Sources */,
+				499B3D742A0D11CA0065D6DF /* AWS_AKL_TestApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,7 +280,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "AWS AKL Test/Akl_Test.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "AWS AKL Test/AWS_AKL_Test.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AWS AKL Test/Preview Content\"";
@@ -288,7 +288,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Akl-Test-Info.plist";
+				INFOPLIST_FILE = "AWS-AKL-Test-Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -304,7 +304,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "nz.akltest.Akl-Test";
+				PRODUCT_BUNDLE_IDENTIFIER = "nz.akltest.AWS-AKL-Test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -319,7 +319,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "AWS AKL Test/Akl_Test.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "AWS AKL Test/AWS_AKL_Test.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AWS AKL Test/Preview Content\"";
@@ -327,7 +327,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Akl-Test-Info.plist";
+				INFOPLIST_FILE = "AWS-AKL-Test-Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -343,7 +343,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "nz.akltest.Akl-Test";
+				PRODUCT_BUNDLE_IDENTIFIER = "nz.akltest.AWS-AKL-Test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
