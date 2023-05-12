@@ -17,6 +17,10 @@ class SquareState: ObservableObject {
     }
 }
 
+class GestureState: ObservableObject {
+    var startingPoint: CGSize = .zero
+}
+
 func dataToDouble(data: Data) -> Double {
     let bigEndianValue: UInt64 = data.withUnsafeBytes { bytes -> UInt64 in
         var value: UInt64 = 0
@@ -29,8 +33,8 @@ func dataToDouble(data: Data) -> Double {
     return Double(bitPattern: valueAsUInt64)
 }
 
-class EchoInputHandler : ChannelInboundHandler {
-    // typealias changes to wrap out ByteBuffer in an AddressedEvelope which describes where the packages are going
+class IncomingDatagramHandler : ChannelInboundHandler {
+    // typealias changes to wrap out ByteBuffer in an AddressedEnvelope which describes where the packages are going
     public typealias InboundIn = AddressedEnvelope<ByteBuffer>
     public typealias OutboundOut = AddressedEnvelope<ByteBuffer>
     private var squareState: SquareState
@@ -71,7 +75,7 @@ class NetCode {
         let bootstrap = DatagramBootstrap(group: group!)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .channelInitializer { channel in
-                channel.pipeline.addHandler(EchoInputHandler(squareState))
+                channel.pipeline.addHandler(IncomingDatagramHandler(squareState))
             }
 
         remoteAddress = try! SocketAddress(ipAddress: "256.256.256.256", port: 65536)
@@ -130,13 +134,9 @@ class NetCode {
     }
 }
 
-class GestureStore: ObservableObject {
-    var startingPoint: CGSize = .zero
-}
-
 struct ContentView: View {
     @ObservedObject var squareState = SquareState()
-    @StateObject var gestureStore = GestureStore()
+    @StateObject var gestureState = GestureState()
 
     let netCode = NetCode()
 
@@ -148,12 +148,12 @@ struct ContentView: View {
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        let x = self.gestureStore.startingPoint.width + gesture.translation.width
-                        let y = self.gestureStore.startingPoint.height + gesture.translation.height
+                        let x = self.gestureState.startingPoint.width + gesture.translation.width
+                        let y = self.gestureState.startingPoint.height + gesture.translation.height
                         self.netCode.sendPosition(x: x, y: y)
                     }
                     .onEnded { _ in
-                        self.gestureStore.startingPoint = self.squareState.squarePosition
+                        self.gestureState.startingPoint = self.squareState.squarePosition
                     }
             )
             .onAppear {
