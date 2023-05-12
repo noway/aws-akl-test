@@ -11,6 +11,8 @@
 		499B3D762A0D11CA0065D6DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499B3D752A0D11CA0065D6DF /* ContentView.swift */; };
 		499B3D782A0D11CB0065D6DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499B3D772A0D11CB0065D6DF /* Assets.xcassets */; };
 		499B3D7C2A0D11CB0065D6DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499B3D7B2A0D11CB0065D6DF /* Preview Assets.xcassets */; };
+		499B3D842A0D164F0065D6DF /* NIO in Frameworks */ = {isa = PBXBuildFile; productRef = 499B3D832A0D164F0065D6DF /* NIO */; };
+		499B3D862A0D164F0065D6DF /* NIOFoundationCompat in Frameworks */ = {isa = PBXBuildFile; productRef = 499B3D852A0D164F0065D6DF /* NIOFoundationCompat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,7 @@
 		499B3D772A0D11CB0065D6DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		499B3D792A0D11CB0065D6DF /* Akl_Test.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Akl_Test.entitlements; sourceTree = "<group>"; };
 		499B3D7B2A0D11CB0065D6DF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		499B3D872A0D19340065D6DF /* Akl-Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Akl-Test-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +30,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				499B3D862A0D164F0065D6DF /* NIOFoundationCompat in Frameworks */,
+				499B3D842A0D164F0065D6DF /* NIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +57,7 @@
 		499B3D722A0D11CA0065D6DF /* Akl Test */ = {
 			isa = PBXGroup;
 			children = (
+				499B3D872A0D19340065D6DF /* Akl-Test-Info.plist */,
 				499B3D732A0D11CA0065D6DF /* Akl_TestApp.swift */,
 				499B3D752A0D11CA0065D6DF /* ContentView.swift */,
 				499B3D772A0D11CB0065D6DF /* Assets.xcassets */,
@@ -85,6 +91,10 @@
 			dependencies = (
 			);
 			name = "Akl Test";
+			packageProductDependencies = (
+				499B3D832A0D164F0065D6DF /* NIO */,
+				499B3D852A0D164F0065D6DF /* NIOFoundationCompat */,
+			);
 			productName = "Akl Test";
 			productReference = 499B3D702A0D11CA0065D6DF /* Akl Test.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +123,9 @@
 				Base,
 			);
 			mainGroup = 499B3D672A0D11CA0065D6DF;
+			packageReferences = (
+				499B3D822A0D164F0065D6DF /* XCRemoteSwiftPackageReference "swift-nio" */,
+			);
 			productRefGroup = 499B3D712A0D11CA0065D6DF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -269,6 +282,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Akl-Test-Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -307,6 +321,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Akl-Test-Info.plist";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -354,6 +369,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		499B3D822A0D164F0065D6DF /* XCRemoteSwiftPackageReference "swift-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-nio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		499B3D832A0D164F0065D6DF /* NIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 499B3D822A0D164F0065D6DF /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIO;
+		};
+		499B3D852A0D164F0065D6DF /* NIOFoundationCompat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 499B3D822A0D164F0065D6DF /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOFoundationCompat;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 499B3D682A0D11CA0065D6DF /* Project object */;
 }
