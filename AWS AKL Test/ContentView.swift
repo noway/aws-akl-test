@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Akl Test
+//  AWS AKL Test
 //
 //  Created by Ilia Sidorenko on 12/05/23.
 //

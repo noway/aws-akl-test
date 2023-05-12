@@ -17,8 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		491690DD2A0E360B00FF36FA /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = "Akl Test/Config.xcconfig"; sourceTree = "<group>"; };
-		499B3D702A0D11CA0065D6DF /* Akl Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Akl Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		491690DD2A0E360B00FF36FA /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = "AWS AKL Test/Config.xcconfig"; sourceTree = "<group>"; };
+		499B3D702A0D11CA0065D6DF /* AWS AKL Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AWS AKL Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		499B3D732A0D11CA0065D6DF /* Akl_TestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Akl_TestApp.swift; sourceTree = "<group>"; };
 		499B3D752A0D11CA0065D6DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		499B3D772A0D11CB0065D6DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 			isa = PBXGroup;
 			children = (
 				491690DD2A0E360B00FF36FA /* Config.xcconfig */,
-				499B3D722A0D11CA0065D6DF /* Akl Test */,
+				499B3D722A0D11CA0065D6DF /* AWS AKL Test */,
 				499B3D712A0D11CA0065D6DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,12 +52,12 @@
 		499B3D712A0D11CA0065D6DF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				499B3D702A0D11CA0065D6DF /* Akl Test.app */,
+				499B3D702A0D11CA0065D6DF /* AWS AKL Test.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		499B3D722A0D11CA0065D6DF /* Akl Test */ = {
+		499B3D722A0D11CA0065D6DF /* AWS AKL Test */ = {
 			isa = PBXGroup;
 			children = (
 				499B3D872A0D19340065D6DF /* Akl-Test-Info.plist */,
@@ -67,7 +67,7 @@
 				499B3D792A0D11CB0065D6DF /* Akl_Test.entitlements */,
 				499B3D7A2A0D11CB0065D6DF /* Preview Content */,
 			);
-			path = "Akl Test";
+			path = "AWS AKL Test";
 			sourceTree = "<group>";
 		};
 		499B3D7A2A0D11CB0065D6DF /* Preview Content */ = {
@@ -81,9 +81,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		499B3D6F2A0D11CA0065D6DF /* Akl Test */ = {
+		499B3D6F2A0D11CA0065D6DF /* AWS AKL Test */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 499B3D7F2A0D11CB0065D6DF /* Build configuration list for PBXNativeTarget "Akl Test" */;
+			buildConfigurationList = 499B3D7F2A0D11CB0065D6DF /* Build configuration list for PBXNativeTarget "AWS AKL Test" */;
 			buildPhases = (
 				499B3D6C2A0D11CA0065D6DF /* Sources */,
 				499B3D6D2A0D11CA0065D6DF /* Frameworks */,
@@ -93,13 +93,13 @@
 			);
 			dependencies = (
 			);
-			name = "Akl Test";
+			name = "AWS AKL Test";
 			packageProductDependencies = (
 				499B3D832A0D164F0065D6DF /* NIO */,
 				499B3D852A0D164F0065D6DF /* NIOFoundationCompat */,
 			);
-			productName = "Akl Test";
-			productReference = 499B3D702A0D11CA0065D6DF /* Akl Test.app */;
+			productName = "AWS AKL Test";
+			productReference = 499B3D702A0D11CA0065D6DF /* AWS AKL Test.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -117,7 +117,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 499B3D6B2A0D11CA0065D6DF /* Build configuration list for PBXProject "Akl Test" */;
+			buildConfigurationList = 499B3D6B2A0D11CA0065D6DF /* Build configuration list for PBXProject "AWS AKL Test" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -133,7 +133,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				499B3D6F2A0D11CA0065D6DF /* Akl Test */,
+				499B3D6F2A0D11CA0065D6DF /* AWS AKL Test */,
 			);
 		};
 /* End PBXProject section */
@@ -280,10 +280,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Akl Test/Akl_Test.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "AWS AKL Test/Akl_Test.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Akl Test/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"AWS AKL Test/Preview Content\"";
 				DEVELOPMENT_TEAM = 4T3939V9NA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -319,10 +319,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Akl Test/Akl_Test.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "AWS AKL Test/Akl_Test.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Akl Test/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"AWS AKL Test/Preview Content\"";
 				DEVELOPMENT_TEAM = 4T3939V9NA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -356,7 +356,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		499B3D6B2A0D11CA0065D6DF /* Build configuration list for PBXProject "Akl Test" */ = {
+		499B3D6B2A0D11CA0065D6DF /* Build configuration list for PBXProject "AWS AKL Test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				499B3D7D2A0D11CB0065D6DF /* Debug */,
@@ -365,7 +365,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		499B3D7F2A0D11CB0065D6DF /* Build configuration list for PBXNativeTarget "Akl Test" */ = {
+		499B3D7F2A0D11CB0065D6DF /* Build configuration list for PBXNativeTarget "AWS AKL Test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				499B3D802A0D11CB0065D6DF /* Debug */,
