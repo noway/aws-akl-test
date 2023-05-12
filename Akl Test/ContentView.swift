@@ -134,12 +134,13 @@ class NetCode {
     }
 }
 
-
-
+class GestureStore: ObservableObject {
+    var startingPoint: CGSize = .zero
+}
 
 struct ContentView: View {
     @ObservedObject var publisher = PublisherClass()
-    @State var startingPoint: CGSize = .zero
+    @StateObject var gestureStore = GestureStore()
 
     let netCode = NetCode()
 
@@ -151,12 +152,12 @@ struct ContentView: View {
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        let x = self.startingPoint.width + gesture.translation.width
-                        let y = self.startingPoint.height + gesture.translation.height
+                        let x = self.gestureStore.startingPoint.width + gesture.translation.width
+                        let y = self.gestureStore.startingPoint.height + gesture.translation.height
                         self.netCode.sendPosition(x: x, y: y)
                     }
                     .onEnded { _ in
-                        self.startingPoint = self.publisher.squarePosition
+                        self.gestureStore.startingPoint = self.publisher.squarePosition
                     }
             )
             .onAppear {
