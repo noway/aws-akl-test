@@ -21,16 +21,16 @@ class GestureState: ObservableObject {
     var startingPoint: CGSize = .zero
 }
 
-func dataToDouble(data: Data) -> Double {
-    let bigEndianValue: UInt64 = data.withUnsafeBytes { bytes -> UInt64 in
-        var value: UInt64 = 0
+func dataToFloat(data: Data) -> Float {
+    let bigEndianValue: UInt32 = data.withUnsafeBytes { bytes -> UInt32 in
+        var value: UInt32 = 0
         _ = withUnsafeMutableBytes(of: &value) { valueBytes in
             bytes.copyBytes(to: valueBytes)
         }
         return value
     }
-    let valueAsUInt64 = UInt64(bigEndian: bigEndianValue)
-    return Double(bitPattern: valueAsUInt64)
+    let valueAsUInt64 = UInt32(bigEndian: bigEndianValue)
+    return Float(bitPattern: valueAsUInt64)
 }
 
 class IncomingDatagramHandler : ChannelInboundHandler {
@@ -48,14 +48,14 @@ class IncomingDatagramHandler : ChannelInboundHandler {
         let data = Data(byteBuffer.readableBytesView)
 
         _ = data[0]
-        let xData = data[1...8]
-        let yData = data[9...16]
+        let xData = data[1...4]
+        let yData = data[5...8]
         
-        let x = dataToDouble(data: xData)
-        let y = dataToDouble(data: yData)
+        let x = dataToFloat(data: xData)
+        let y = dataToFloat(data: yData)
 
         DispatchQueue.main.async {
-            self.squareState.setPosition(x: x, y: y)
+            self.squareState.setPosition(x: Double(x), y: Double(y))
         }
     }
     
@@ -104,7 +104,7 @@ class NetCode {
         }
     }
 
-    func sendPosition(x: Double, y: Double) {
+    func sendPosition(x: Float, y: Float) {
         do {
             var data = Data()
             data.append(0x02)
@@ -153,7 +153,7 @@ struct ContentView: View {
                     .onChanged { gesture in
                         let x = self.gestureState.startingPoint.width + gesture.translation.width
                         let y = self.gestureState.startingPoint.height + gesture.translation.height
-                        self.netCode.sendPosition(x: x, y: y)
+                        self.netCode.sendPosition(x: Float(x), y: Float(y))
                     }
                     .onEnded { _ in
                         self.gestureState.startingPoint = self.squareState.squarePosition
