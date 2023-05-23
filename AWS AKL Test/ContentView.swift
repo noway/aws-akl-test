@@ -111,6 +111,7 @@ class NetCode {
             buffer.writeBytes(data)
             let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
             print("wait 2")
+            // TODO: there could be a race condition here, channel may be nil by the time we get to this line
             try channel!.writeAndFlush(writeData).wait()
         } catch {
             print("Failed to sendData: \(error)")
