@@ -98,6 +98,10 @@ class NetCode {
     }
 
     func sendHello() {
+        if channel == nil {
+            reconnect()
+        }
+
         do {
             var data = Data()
             data.append(0x01)
