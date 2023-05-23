@@ -111,7 +111,7 @@ class NetCode {
             let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
             try channel!.writeAndFlush(writeData).wait()
         } catch {
-            print("Failed to send UDP message: \(error)")
+            print("Failed to sendHello: \(error)")
             disconnect()
         }
     }
@@ -135,7 +135,7 @@ class NetCode {
             let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
             try channel!.writeAndFlush(writeData).wait()
         } catch {
-            print("Failed to send UDP message: \(error)")
+            print("Failed to sendPosition: \(error)")
             disconnect()
         }
     }
