@@ -87,6 +87,7 @@ class NetCode {
         
         do {
             remoteAddress = try SocketAddress(ipAddress: remoteAddr, port: remotePort)
+            print("wait 1")
             channel = try bootstrap.bind(host: "0.0.0.0", port: 0).wait()
         } catch {
             print("Failed to connect: \(error)")
@@ -100,7 +101,8 @@ class NetCode {
     }
 
     func sendData(data: Data) {
-        if channel == nil {
+        // TODO: this should be happening in a queue, so we don't have weird race conditions where multiple sendDatas trying to reconnect at once
+        if channel == nil || !channel!.isActive {
             reconnect()
         }
 
@@ -108,10 +110,10 @@ class NetCode {
             var buffer = channel!.allocator.buffer(capacity: data.count)
             buffer.writeBytes(data)
             let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
+            print("wait 2")
             try channel!.writeAndFlush(writeData).wait()
         } catch {
             print("Failed to sendData: \(error)")
-            disconnect()
         }
     }
 
@@ -137,6 +139,7 @@ class NetCode {
         do {
             if let channel = channel {
                 if channel.isActive {
+                    print("wait 3")
                     try channel.close().wait()
                 }
             }
