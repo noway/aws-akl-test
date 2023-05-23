@@ -83,8 +83,9 @@ class NetCode {
         let remoteAddr = Bundle.main.object(forInfoDictionaryKey: "RemoteAddr") as? String ?? ""
         let remotePortStr = Bundle.main.object(forInfoDictionaryKey: "RemotePort") as? String ?? "0"
         let remotePort = Int(remotePortStr) ?? 0
-        remoteAddress = try! SocketAddress(ipAddress: remoteAddr, port: remotePort)
+        
         do {
+            remoteAddress = try SocketAddress(ipAddress: remoteAddr, port: remotePort)
             channel = try bootstrap.bind(host: "0.0.0.0", port: 0).wait()
         } catch {
             print("Failed to connect: \(error)")
