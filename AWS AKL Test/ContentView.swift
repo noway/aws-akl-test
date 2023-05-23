@@ -173,9 +173,11 @@ struct ContentView: View {
             .gesture(
                 DragGesture()
                     .onChanged { gesture in
-                        let x = self.gestureState.startingPoint.width + gesture.translation.width
-                        let y = self.gestureState.startingPoint.height + gesture.translation.height
-                        self.netCode.sendPosition(x: Float(x), y: Float(y))
+                        DispatchQueue.global(qos: .background).async {
+                            let x = self.gestureState.startingPoint.width + gesture.translation.width
+                            let y = self.gestureState.startingPoint.height + gesture.translation.height
+                            self.netCode.sendPosition(x: Float(x), y: Float(y))
+                        }
                     }
                     .onEnded { _ in
                         self.gestureState.startingPoint = self.squareState.squarePosition
