@@ -69,8 +69,10 @@ class NetCode {
     var group: MultiThreadedEventLoopGroup? = nil
     var channel: Channel? = nil
     var remoteAddress: SocketAddress? = nil
+    var squareState: SquareState? = nil
 
     func connect(squareState: SquareState) {
+        self.squareState = squareState
         group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
         let bootstrap = DatagramBootstrap(group: group!)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
@@ -90,6 +92,11 @@ class NetCode {
         }
     }
 
+    func reconnect() {
+        disconnect()
+        connect(squareState: squareState!)
+    }
+
     func sendHello() {
         do {
             var data = Data()
@@ -105,6 +112,10 @@ class NetCode {
     }
 
     func sendPosition(x: Float, y: Float) {
+        if channel == nil {
+            reconnect()
+        }
+
         do {
             var data = Data()
             data.append(0x02)
@@ -126,7 +137,9 @@ class NetCode {
 
     func disconnect() {
         if let channel = channel {
-            try! channel.close().wait()
+             if channel.isActive {
+                 try! channel.close().wait()
+             }
         }
         if let group = group {
             try! group.syncShutdownGracefully()
