@@ -73,8 +73,9 @@ class NetCode {
 
     func connect(squareState: SquareState) {
         self.squareState = squareState
-        group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-        let bootstrap = DatagramBootstrap(group: group!)
+        let elGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+        group = elGroup
+        let bootstrap = DatagramBootstrap(group: elGroup)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .channelInitializer { channel in
                 channel.pipeline.addHandler(IncomingDatagramHandler(squareState))
