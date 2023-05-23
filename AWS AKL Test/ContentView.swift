@@ -99,46 +99,38 @@ class NetCode {
         connect(squareState: squareState!)
     }
 
-    func sendHello() {
+    func sendData(data: Data) {
         if channel == nil {
             reconnect()
         }
 
         do {
-            var data = Data()
-            data.append(0x01)
-            var buffer = channel!.allocator.buffer(capacity: 1)
+            var buffer = channel!.allocator.buffer(capacity: data.count)
             buffer.writeBytes(data)
             let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
             try channel!.writeAndFlush(writeData).wait()
         } catch {
-            print("Failed to sendHello: \(error)")
+            print("Failed to sendData: \(error)")
             disconnect()
         }
     }
 
-    func sendPosition(x: Float, y: Float) {
-        if channel == nil {
-            reconnect()
-        }
+    func sendHello() {
+        var data = Data()
+        data.append(0x01)
+        sendData(data: data)
+    }
 
-        do {
-            var data = Data()
-            data.append(0x02)
-            withUnsafeBytes(of: x.bitPattern.bigEndian) { bytes in
-                data.append(contentsOf: bytes)
-            }
-            withUnsafeBytes(of: y.bitPattern.bigEndian) { bytes in
-                data.append(contentsOf: bytes)
-            }
-            var buffer = channel!.allocator.buffer(capacity: 4 * 2 + 1)
-            buffer.writeBytes(data)
-            let writeData = AddressedEnvelope(remoteAddress: remoteAddress!, data: buffer)
-            try channel!.writeAndFlush(writeData).wait()
-        } catch {
-            print("Failed to sendPosition: \(error)")
-            disconnect()
+    func sendPosition(x: Float, y: Float) {
+        var data = Data()
+        data.append(0x02)
+        withUnsafeBytes(of: x.bitPattern.bigEndian) { bytes in
+            data.append(contentsOf: bytes)
         }
+        withUnsafeBytes(of: y.bitPattern.bigEndian) { bytes in
+            data.append(contentsOf: bytes)
+        }
+        sendData(data: data)
     }
 
     func disconnect() {
