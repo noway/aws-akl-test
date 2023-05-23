@@ -141,17 +141,21 @@ class NetCode {
     }
 
     func disconnect() {
-        if let channel = channel {
-             if channel.isActive {
-                 try! channel.close().wait()
-             }
+        do {
+            if let channel = channel {
+                if channel.isActive {
+                    try channel.close().wait()
+                }
+            }
+            if let group = group {
+                try group.syncShutdownGracefully()
+            }
+            group = nil
+            channel = nil
+            remoteAddress = nil
+        } catch {
+            print("Failed to disconnect: \(error)")
         }
-        if let group = group {
-            try! group.syncShutdownGracefully()
-        }
-        group = nil
-        channel = nil
-        remoteAddress = nil
     }
 }
 
